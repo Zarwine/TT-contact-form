@@ -42,6 +42,11 @@ class Contact
      */
     private $content;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $viewed;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -103,6 +108,18 @@ class Contact
     public function setContent(string $content): self
     {
         $this->content = $content;
+
+        return $this;
+    }
+
+    public function getViewed(): ?bool
+    {
+        return $this->viewed;
+    }
+
+    public function setViewed(bool $viewed): self
+    {
+        $this->viewed = $viewed;
 
         return $this;
     }

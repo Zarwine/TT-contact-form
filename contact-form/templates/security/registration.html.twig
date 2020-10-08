@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}S'enregistrer{% endblock %}
+
+{% block body %}
+<h1>Inscription</h1>
+<div class="container">
+
+    {{ form_start(formRegister) }}
+    {{ form_row(formRegister.username, {'label' : "Nom ", "attr" : { "placeholder" : "Votre nom d'utilisateur"}}) }}
+    {{ form_row(formRegister.email, {'label' : "Email ", "attr" : { "placeholder" : "Votre adresse mail"}}) }}
+    {{ form_row(formRegister.password, {'label' : "Mot de passe ", "attr" : { "placeholder" : "Votre mot de passe"}}) }}
+    {{ form_row(formRegister.confirm_password, {'label' : "Confirmation du mot de passe ", "attr" : { "placeholder" : "Confirmez votre mot de passe"}}) }}
+    <button class="btn btn-primary">S'enregistrer</button>
+    {{ form_end(formRegister) }}
+
+</div>
+
+{% endblock %}
