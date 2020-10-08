@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Test technique{% endblock %}
+
+{% block body %}
+<h1>Test technique</h1>
+<div class="container">
+    <img class="row" src="https://placehold.it/512x512" />
+    {% if notif is defined %}
+    <h2 class="m-t-5">{{ notif }}</h2>
+    {% else %}
+    <a class="btn btn-primary mt-3" href="{{ path('contact') }}">Contactez nous</a>
+    {% endif %}
+</div>
+
+{% endblock %}
