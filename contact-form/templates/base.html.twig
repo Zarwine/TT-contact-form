@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}ACSEO - Test Technique{% endblock %}</title>
+        <link rel="stylesheet" href="https://bootswatch.com/4/pulse/bootstrap.min.css">
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-log navbar-dark bg-primary">
+        <a class="navbar-brand" href="{{ path('home') }}">ACSEO</a>
+        <div>
+            <ul class="navbar-nav mr-auto">
+                {% if not app.user %}
+                <li class="nav-item"><a class="nav-link" href="#">Connexion au back-office</a></li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="#">Déconnexion</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+        <div class="container">
+        {% block body %}{% endblock %}
+        </div>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
