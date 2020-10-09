@@ -30,6 +30,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(pattern="/^[a-zA-Z\-]+$/", message="Vous ne pouvez entrer que des lettres")
      */
     private $username;
 

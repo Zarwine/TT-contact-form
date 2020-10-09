@@ -2,8 +2,9 @@
 
 namespace App\Entity;
 
-use App\Repository\ContactRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ContactRepository;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ContactRepository::class)
@@ -19,21 +20,25 @@ class Contact
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(pattern="/^[a-zA-Z\-]+$/", message="Vous ne pouvez entrer que des lettres")
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Regex(pattern="/^[a-zA-Z\-]+$/", message="Vous ne pouvez entrer que des lettres")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
      */
     private $mail;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Assert\Regex(pattern="/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/", message="Veuillez entrer un numéro de téléphone correct")
      */
     private $phone;
 

@@ -2,25 +2,39 @@
 
 namespace App\Controller;
 
+use App\Repository\ContactRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
-* Require ROLE_ADMIN for *every* controller method in this class.
-*
-* @IsGranted("ROLE_ADMIN")
-*/
+ * Require ROLE_ADMIN for *every* controller method in this class.
+ *
+ * @IsGranted("ROLE_ADMIN")
+ */
 class AdminController extends AbstractController
 {
-   /**
-    * Require ROLE_ADMIN for only this controller method.
-    *
-    * @IsGranted("ROLE_ADMIN")
-    * @Route("/admin", name="admin")
-    */
-    public function adminDashboard()
+    /**
+     * Require ROLE_ADMIN for only this controller method.
+     *
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/admin", name="admin")
+     */
+    public function adminDashboard(ContactRepository $repo)
     {
-        return $this->render('admin/admin.html.twig');
+        $contacts = $repo->findAll();
+
+        $form = $this->createFormBuilder($contacts)
+                ->add("viewed", CheckboxType::class)
+                ->getForm();
+            $results = $form->createView();
+
+        return $this->render('admin/admin.html.twig', [
+            'contacts' => $contacts,
+            'formContact' => $results
+        ]);
     }
 }

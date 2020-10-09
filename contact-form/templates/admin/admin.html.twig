@@ -4,4 +4,63 @@
 
 {% block body %}
 <h1>Panneau d'Administration</h1>
+<div id="contact_container">
+    <h4>vous avez {{ contacts | length }} messages : </h4>
+    <form action="{{ path('admin') }}" method="post">
+        <h4>vous avez X messages non lus : </h4>
+
+        {% for message in contacts %}
+            {% if message.viewed == 0 %}
+                <div class="comment">
+                    <div>
+                        <div class="col-3">
+                            De : {{ message.lastname }} {{ message.firstname }}
+                        </div>
+                        <div class="col">
+                            Mail : {{ message.mail }}
+                        </div>
+                        <div class="col">
+                            Téléphone : {{ message.phone }}
+                        </div>
+                        <p class="col">
+                            {{ message.content | raw}}
+                        <p>
+                        <div>
+
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+
+        {{ form(formContact) }}
+
+        <button class="btn btn-primary">Actualiser</button>
+    </form>
+    <hr>
+    <form action="{{ path('admin') }}" method="post"></form>
+    <h4>vous avez X messages lus : </h4>
+    {% for message in contacts %}
+    {% if message.viewed == 1 %}
+    <div class="comment">
+        <div>
+            <div class="col-3">
+                De : {{ message.lastname }} {{ message.firstname }}
+            </div>
+            <div class="col">
+                Mail : {{ message.mail }}
+            </div>
+            <div class="col">
+                Téléphone : {{ message.phone }}
+            </div>
+            <p class="col">
+                {{ message.content | raw}}
+            <p>
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+    <button class="btn btn-primary">Marquer comme non lu</button>
+    </form>
+</div>
 {% endblock %}
