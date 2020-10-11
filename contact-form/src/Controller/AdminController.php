@@ -25,16 +25,26 @@ class AdminController extends AbstractController
      */
     public function adminDashboard(ContactRepository $repo)
     {
-        $contacts = $repo->findAll();
-
-        $form = $this->createFormBuilder($contacts)
-                ->add("viewed", CheckboxType::class)
-                ->getForm();
-            $results = $form->createView();
+        $contacts = $repo->findAll();             
 
         return $this->render('admin/admin.html.twig', [
-            'contacts' => $contacts,
-            'formContact' => $results
+            'contacts' => $contacts
+        ]);
+    }
+    /**
+     * Require ROLE_ADMIN for only this controller method.
+     *
+     * @IsGranted("ROLE_ADMIN")
+     * @Route("/admin2", name="admin_check")
+     */
+    public function checkMessage(ContactRepository $repo)
+    {
+        var_dump($_POST);
+        exit;
+        $contacts = $repo->findAll();             
+
+        return $this->render('admin/admin.html.twig', [
+            'contacts' => $contacts
         ]);
     }
 }
