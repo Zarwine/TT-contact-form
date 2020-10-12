@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
+use App\Entity\Contact;
 use App\Repository\ContactRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Require ROLE_ADMIN for *every* controller method in this class.
- *
+ * 
+ * @Route("/admin", name="admin_")
  * @IsGranted("ROLE_ADMIN")
  */
 class AdminController extends AbstractController
@@ -20,12 +22,11 @@ class AdminController extends AbstractController
     /**
      * Require ROLE_ADMIN for only this controller method.
      *
-     * @IsGranted("ROLE_ADMIN")
-     * @Route("/admin", name="admin")
+     * @Route("/dashboard", name="dashboard", methods={"GET"})
      */
-    public function adminDashboard(ContactRepository $repo)
+    public function dashboard(ContactRepository $repo)
     {
-        $contacts = $repo->findAll();             
+        $contacts = $repo->findAll();
 
         return $this->render('admin/admin.html.twig', [
             'contacts' => $contacts
@@ -34,17 +35,29 @@ class AdminController extends AbstractController
     /**
      * Require ROLE_ADMIN for only this controller method.
      *
-     * @IsGranted("ROLE_ADMIN")
-     * @Route("/admin2", name="admin_check")
+     * @Route("/view_message", name="view_message", methods={"POST"})
      */
-    public function checkMessage(ContactRepository $repo)
+    public function viewMessage(ContactRepository $repo, Request $request, EntityManagerInterface $manager)
     {
-        var_dump($_POST);
-        exit;
-        $contacts = $repo->findAll();             
+        $submittedToken = $request->request->get('_token');
 
-        return $this->render('admin/admin.html.twig', [
-            'contacts' => $contacts
-        ]);
+        if ($this->isCsrfTokenValid('view-message', $submittedToken)) {
+            $messages = $request->request->get("message");
+            $entityManager = $this->getDoctrine()->getManager();
+            $ids = array_keys($messages);
+
+            foreach ($ids as $id) {
+                $message = $entityManager->getRepository(Contact::class)->find($id);
+                if (!$message) {
+                    throw $this->createNotFoundException(
+                        "Aucun message ne possède l'id suivant : " . $id
+                    );
+                }
+                $message->setViewed( ! $message->getViewed() );
+
+                $entityManager->flush();
+            }
+        }
+        return $this->redirectToRoute('admin_dashboard');
     }
 }

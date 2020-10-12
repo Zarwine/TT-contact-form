@@ -6,14 +6,15 @@
 <h1>Panneau d'Administration</h1>
 <div id="contact_container">
     <h4>vous avez {{ contacts | length }} messages : </h4>
-    <form action="{{ path('admin_check') }}" method="POST">
+    <form action="{{ path('admin_view_message') }}" method="POST" >
+        <input type="hidden" name="_token" value="{{ csrf_token('view-message') }}"/>
         <h4>vous avez X messages non lus : </h4>
-
+        
         {% for message in contacts %}
             {% if message.viewed == 0 %}
             <div class="comment">
-                <div>
-                    <input type="checkbox">
+                <input type="checkbox" name="message[{{message.id}}]">
+                <div class="container">
                     <div class="col-3">
                         De : {{ message.lastname }} {{ message.firstname }}
                     </div>
@@ -26,9 +27,6 @@
                     <p class="col">
                         {{ message.content | raw}}
                     <p>
-                    <div>
-
-                    </div>
                 </div>
             </div>
             {% endif %}
@@ -37,13 +35,15 @@
         <button class="btn btn-primary">Actualiser</button>
     </form>
     <hr>
-    <form action="{{ path('admin_check') }}" method="post"></form>
+    <form action="{{ path('admin_view_message') }}" method="post">
+    <input type="hidden" name="_token" value="{{ csrf_token('view-message') }}"/>
     <h4>vous avez X messages lus : </h4>
+
     {% for message in contacts %}
     {% if message.viewed == 1 %}
     <div class="comment">
-        <div>
-            <input type="checkbox" checked>
+        <input type="checkbox" name="message[{{message.id}}]">
+        <div class="container">
             <div class="col-3">
                 De : {{ message.lastname }} {{ message.firstname }}
             </div>
