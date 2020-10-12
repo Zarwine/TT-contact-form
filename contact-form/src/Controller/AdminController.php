@@ -27,9 +27,11 @@ class AdminController extends AbstractController
     public function dashboard(ContactRepository $repo)
     {
         $contacts = $repo->findAll();
+        $newMessage = $repo->findBy(['viewed' => '0']);
 
         return $this->render('admin/admin.html.twig', [
-            'contacts' => $contacts
+            'contacts'    => $contacts,
+            'new_message' => $newMessage
         ]);
     }
     /**

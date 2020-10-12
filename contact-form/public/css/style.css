@@ -1,0 +1,16 @@
+.comment_container:nth-child(even){
+    background-color: rgb(240,240,240);
+}
+.comment_container:nth-child(odd){
+    background-color: rgb(255,255,255);
+}
+.comment {
+    display: flex;
+    flex-flow: row nowrap;
+    overflow: hidden;
+    margin-bottom: 16px;
+    cursor: pointer;
+}
+.comment input:first-child {
+    margin-top: 7px;
+}
